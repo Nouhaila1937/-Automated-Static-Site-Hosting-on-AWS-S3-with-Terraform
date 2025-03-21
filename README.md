@@ -1,30 +1,131 @@
-# -Automated-Static-Site-Hosting-on-AWS-S3-with-Terraform
-Ce projet automatise le déploiement d'un site web statique sur AWS S3 en utilisant Terraform. Il permet de configurer un bucket S3 en mode site web, de gérer les permissions et d'uploader les fichiers statiques (index.html, error.html).
-📌 Description
-Ce projet automatise le déploiement d'un site web statique sur AWS S3 en utilisant Terraform. Il permet de configurer un bucket S3 en mode site web, de gérer les permissions et d'uploader les fichiers statiques (index.html, error.html).
+# 🌍 Déploiement d'un Site Statique sur AWS S3 avec Terraform
 
-📦 Fonctionnalités
-✅ Création automatique d'un bucket S3 et configuration en mode site web
-✅ Gestion des permissions pour un accès public sécurisé
-✅ Déploiement de fichiers HTML (index.html, error.html) avec public-read
-✅ Configuration d'une page d'erreur personnalisée
-✅ Infrastructure as Code (IaC) avec Terraform
+![Déploiement](deploiment.png)
 
-🔧 Prérequis
-Terraform installé
-Un compte AWS avec des credentials configurés
+## 📌 Description
+Ce projet montre comment utiliser **Terraform** pour déployer un site statique sur **AWS S3** en activant l'hébergement statique et en définissant les permissions nécessaires.
 
-🚀 Déploiement
-Initialiser Terraform
-```bash
+## 🛠 Technologies utilisées
+- 🌿 **Terraform**
+- ☁️ **AWS S3**
+- 🔐 **ACL & IAM Policies**
+- 🌍 **Hébergement statique**
+
+## 📂 Structure du Projet
+```
+📁 s3-static-site
+│── 📄 main.tf       # Code Terraform
+│── 📄 variables.tf  # Variables Terraform
+│── 📄 index.html    # Page principale
+│── 📄 error.html    # Page d'erreur
+│── 📄 README.md     # Documentation
+│── 📁 images        # Captures d'écran
+```
+
+## 🚀 Déploiement avec Terraform
+### 📌 Étape 1: Initialisation de Terraform
+```sh
 terraform init
 ```
-Planifier le déploiement
-```bash
+
+### 📌 Étape 2: Planification
+```sh
 terraform plan
 ```
-Appliquer les changements
-```bash
+
+### 📌 Étape 3: Application des configurations
+```sh
 terraform apply -auto-approve
 ```
-Une fois le déploiement terminé, tu obtiendras l'URL du site hébergé sur S3. 🎉
+
+## 📜 Code Terraform
+
+```hcl
+resource "aws_s3_bucket" "mybucket" {
+  bucket = var.bucketname
+}
+
+resource "aws_s3_bucket_ownership_controls" "example" {
+  bucket = aws_s3_bucket.mybucket.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.mybucket.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [
+    aws_s3_bucket_ownership_controls.example,
+    aws_s3_bucket_public_access_block.example
+  ]
+
+  bucket = aws_s3_bucket.mybucket.id
+  acl    = "public-read"
+}
+
+resource "aws_s3_object" "index" {
+  bucket = aws_s3_bucket.mybucket.id
+  key = "index.html"
+  source = "index.html"
+  acl= "public-read"
+  content_type = "text/html"
+}
+
+resource "aws_s3_object" "error" {
+  bucket = aws_s3_bucket.mybucket.id
+  key = "error.html"
+  source = "error.html"
+  acl= "public-read"
+  content_type = "text/html"
+}
+
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.mybucket.id
+  index_document {
+    suffix = "index.html"
+  }
+  error_document {
+    key="error.html"
+  }
+
+  depends_on = [ aws_s3_bucket_acl.example ]
+}
+
+output "mybucket" {
+  value = aws_s3_bucket.mybucket.id
+}
+```
+
+## 📸 Captures d'Écran
+
+### 📌 Configuration ACL
+![ACL](acl.png)
+
+### 📌 Autorisations
+![Autorisation](autorisation.png)
+
+### 📌 Déploiement en cours
+![Déploiement](deploiment.png)
+
+### 📌 Page d'erreur
+![Page d'erreur](errorpage.png)
+
+### 📌 Index.html
+![Index](index.png)
+
+### 📌 Affichage des pages
+![Pages](pages.png)
+
+## 🎯 Résultat final
+Une fois le déploiement terminé, votre site statique sera accessible via l'URL générée par AWS S3.
+
+🚀 **Bon déploiement !**
