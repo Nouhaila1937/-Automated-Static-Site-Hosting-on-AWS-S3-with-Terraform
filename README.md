@@ -41,7 +41,7 @@ terraform apply -auto-approve
 ## 📸 Captures d'Écran
 
 ### 📌 Configuration ACL
-![ACL](acl.png)
+![ACL](/images/acl.png)
 
 ### 📌 Autorisations
 ![Autorisation](autorisation.png)
