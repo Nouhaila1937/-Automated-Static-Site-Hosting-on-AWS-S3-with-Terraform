@@ -1,6 +1,5 @@
 # 🌍 Déploiement d'un Site Statique sur AWS S3 avec Terraform
 
-![Déploiement](deploiment.png)
 
 ## 📌 Description
 Ce projet montre comment utiliser **Terraform** pour déployer un site statique sur **AWS S3** en activant l'hébergement statique et en définissant les permissions nécessaires.
