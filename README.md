@@ -44,19 +44,19 @@ terraform apply -auto-approve
 ![ACL](/images/acl.png)
 
 ### 📌 Autorisations
-![Autorisation](autorisation.png)
+![Autorisation](/images/autorisation.png)
 
 ### 📌 Déploiement en cours
-![Déploiement](deploiment.png)
+![Déploiement](/images/deploiment.png)
 
 ### 📌 Page d'erreur
-![Page d'erreur](errorpage.png)
+![Page d'erreur](/images/errorpage.png)
 
 ### 📌 Index.html
-![Index](index.png)
+![Index](/images/index.png)
 
 ### 📌 Affichage des pages
-![Pages](pages.png)
+![Pages](/images/pages.png)
 
 ## 🎯 Résultat final
 Une fois le déploiement terminé, votre site statique sera accessible via l'URL générée par AWS S3.
